@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const fileDb = require("../fileCategoriesDb");
 const nanoid = require("nanoid");
 const multer = require("multer");
 const path = require("path");
@@ -23,13 +22,13 @@ router.get("/", async (req, res) => {
   res.send(categories);
 });
 
-router.get("/:id", async(req,res)=> {
-    const categories = fileCategoriesDb.getItems();
-    const category = categories.find(item => item.id === req.params.id)
-    if(!category) {
-        res.send(categories);
-    }
-})
+router.get("/:id", async (req, res) => {
+  const categories = fileCategoriesDb.getItems();
+  const category = categories.find((item) => item.id === req.params.id);
+  if (!category) {
+    res.send(categories);
+  }
+});
 
 router.post("/", upload.single("image"), async (req, res) => {
   const id = nanoid();
@@ -42,14 +41,12 @@ router.post("/", upload.single("image"), async (req, res) => {
   res.send(category);
 });
 
-
-router.delete("/:id", async (req, res)=> {
-    const success = await fileCategoriesDb.deleteItem(req.params.id)
-    if(!success) {
-        res.status(404), send({error: "Category not found"});
-    }
-    res.send({message: "Category delete successfuly"});
+router.delete("/:id", async (req, res) => {
+  const success = await fileCategoriesDb.deleteItem(req.params.id);
+  if (!success) {
+    res.status(404), send({ error: "Category not found" });
+  }
+  res.send({ message: "Category delete successfuly" });
 });
-
 
 module.exports = router;

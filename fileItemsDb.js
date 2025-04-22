@@ -1,5 +1,5 @@
 const fs = require("fs").promises;
-const fileName = "./categoriesDb.json";
+const fileName = "./itemsDb.json";
 
 let data = [];
 
@@ -15,8 +15,12 @@ module.exports = {
   getItems() {
     return data;
   },
-  async addItem(place) {
-    data.push(place);
+  async addItem(item) {
+    data.push(item);
+    if (!item.title || !item.categoryId || !item.placeId) {
+      throw new Error("Missing requiered fields")
+    }
+    data.push(item);
     await this.save();
   },
   async save() {

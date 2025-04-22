@@ -1,5 +1,5 @@
 const fs = require("fs").promises;
-const fileName = "./categoriesDb.json";
+const fileName = "./placesDb.json";
 
 let data = [];
 
@@ -15,8 +15,8 @@ module.exports = {
   getItems() {
     return data;
   },
-  async addItem(place) {
-    data.push(place);
+  async addItem(item) {
+    data.push(item);
     await this.save();
   },
   async save() {
@@ -30,5 +30,17 @@ module.exports = {
     data.splice(index, 1);
     await this.save();
     return true;
+  },
+  async updateItem(id, newData) {
+    const index = data.findIndex((item) => item.id === id);
+    if(index === -1) {
+      return null
+    }
+    data[index] = {
+      ...newData,
+      id
+    }
+    await this.save();
+    return data[index];
   },
 };
